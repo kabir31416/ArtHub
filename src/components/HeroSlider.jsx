@@ -9,102 +9,132 @@ import "swiper/css/pagination";
 import Link from "next/link";
 
 export default function HeroSlider() {
-  return (
-    <div className="w-full">
+    return (
+        <div className="w-full">
 
-      <Swiper
-        modules={[Autoplay, Pagination]}
-        autoplay={{ delay: 4000 }}
-        pagination={{ clickable: true }}
-        loop={true}
-        className="h-[85vh]"
-      >
+            <Swiper
+                modules={[Autoplay, Pagination]}
+                autoplay={{ delay: 4000 }}
+                pagination={{ clickable: true }}
+                loop={true}
+                className="h-[85vh]"
+            >
 
-        <SwiperSlide>
-          <div className="h-[85vh] flex items-center justify-center bg-linear-to-r from-slate-950 via-zinc-900 to-slate-950 relative">
+                <SwiperSlide>
+                    <div className="relative h-[85vh] overflow-hidden">
 
-            <div className="absolute inset-0 bg-[url('/art1.jpg')] bg-cover bg-center opacity-40"></div>
+                        {/* Background Image */}
+                        <div
+                            className="absolute inset-0 bg-cover bg-center scale-110 blur-sm"
+                            style={{
+                                backgroundImage:
+                                    "url('https://images.unsplash.com/photo-1652398859643-dbe3299f19cf')",
+                            }}
+                        />
 
-            <div className="relative z-10 text-center px-6 max-w-3xl">
+                        {/* Dark + Gradient Overlay */}
+                        <div className="absolute inset-0 bg-black/50" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-transparent to-purple-950/40" />
 
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
-                Discover <span className="text-orange-500">Masterpieces</span>
-              </h1>
+                        {/* Content */}
+                        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 max-w-3xl mx-auto">
 
-              <p className="text-zinc-300 mt-4">
-                Explore unique digital & physical artworks from talented artists around the world.
-              </p>
+                            <h1 className="text-5xl md:text-6xl font-bold text-white">
+                                Discover <span className="text-orange-500">Masterpieces</span>
+                            </h1>
 
-              <Link
-                href="/artworks"
-                className="inline-block mt-8 px-6 py-3 rounded-full bg-linear-to-r from-orange-500 to-purple-600 text-white"
-              >
-                Browse Artworks
-              </Link>
+                            <p className="text-zinc-300 mt-4">
+                                Explore unique digital & physical artworks from talented artists around the world.
+                            </p>
 
-            </div>
+                            <Link
+                                href="/artworks"
+                                className="inline-block mt-8 px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-purple-600 text-white"
+                            >
+                                Browse Artworks
+                            </Link>
 
-          </div>
-        </SwiperSlide>
+                        </div>
 
-        {/* SLIDE 2 - Featured Artist */}
-        <SwiperSlide>
-          <div className="h-[85vh] flex items-center justify-center bg-linear-to-r from-slate-950 via-zinc-900 to-slate-950 relative">
+                    </div>
+                </SwiperSlide>
 
-            <div className="absolute inset-0 bg-[url('/artist1.jpg')] bg-cover bg-center opacity-40"></div>
+                {/* SLIDE 2 - Featured Artist */}
+                <SwiperSlide>
+                    <div className="relative h-[85vh] overflow-hidden">
 
-            <div className="relative z-10 text-center px-6 max-w-3xl">
+                        <div
+                            className="absolute inset-0 bg-cover bg-center scale-110 blur-sm"
+                            style={{
+                                backgroundImage:
+                                    "url('https://images.unsplash.com/photo-1461344577544-4e5dc9487184')",
+                            }}
+                        />
 
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
-                Meet <span className="text-purple-500">Creative Artists</span>
-              </h1>
+                        <div className="absolute inset-0 bg-black/50" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-950/60 via-transparent to-slate-950/80" />
 
-              <p className="text-zinc-300 mt-4">
-                Support independent creators and collect exclusive art pieces directly from artists.
-              </p>
+                        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 max-w-3xl mx-auto">
 
-              <Link
-                href="/artists"
-                className="inline-block mt-8 px-6 py-3 rounded-full bg-linear-to-r from-purple-600 to-orange-500 text-white"
-              >
-                Explore Artists
-              </Link>
+                            <h1 className="text-5xl md:text-6xl font-bold text-white">
+                                Meet <span className="text-purple-400">Creative Artists</span>
+                            </h1>
 
-            </div>
+                            <p className="text-zinc-300 mt-4">
+                                Support independent creators and collect exclusive art pieces directly from artists.
+                            </p>
 
-          </div>
-        </SwiperSlide>
+                            <Link
+                                href="/artists"
+                                className="inline-block mt-8 px-6 py-3 rounded-full bg-gradient-to-r from-purple-600 to-orange-500 text-white"
+                            >
+                                Explore Artists
+                            </Link>
 
-        {/* SLIDE 3 - Featured Collection */}
-        <SwiperSlide>
-          <div className="h-[85vh] flex items-center justify-center bg-linear-to-r from-slate-950 via-zinc-900 to-slate-950 relative">
+                        </div>
 
-            <div className="absolute inset-0 bg-[url('/collection1.jpg')] bg-cover bg-center opacity-40"></div>
+                    </div>
+                </SwiperSlide>
 
-            <div className="relative z-10 text-center px-6 max-w-3xl">
+                {/* SLIDE 3 - Featured Collection */}
+                <SwiperSlide>
+                    <div className="relative h-[85vh] overflow-hidden">
 
-              <h1 className="text-5xl md:text-6xl font-bold text-white">
-                Curated <span className="text-orange-400">Collections</span>
-              </h1>
+                        <div
+                            className="absolute inset-0 bg-cover bg-center scale-110 blur-sm"
+                            style={{
+                                backgroundImage:
+                                    "url('https://images.unsplash.com/photo-1560421683-6856ea585c78')",
+                            }}
+                        />
 
-              <p className="text-zinc-300 mt-4">
-                Hand-picked art collections designed for collectors and art lovers.
-              </p>
+                        <div className="absolute inset-0 bg-black/50" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-transparent to-orange-950/40" />
 
-              <Link
-                href="/collections"
-                className="inline-block mt-8 px-6 py-3 rounded-full bg-linear-to-r from-orange-500 to-purple-600 text-white"
-              >
-                View Collections
-              </Link>
+                        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6 max-w-3xl mx-auto">
 
-            </div>
+                            <h1 className="text-5xl md:text-6xl font-bold text-white">
+                                Curated <span className="text-orange-400">Collections</span>
+                            </h1>
 
-          </div>
-        </SwiperSlide>
+                            <p className="text-zinc-300 mt-4">
+                                Hand-picked art collections designed for collectors and art lovers.
+                            </p>
 
-      </Swiper>
+                            <Link
+                                href="/collections"
+                                className="inline-block mt-8 px-6 py-3 rounded-full bg-gradient-to-r from-orange-500 to-purple-600 text-white"
+                            >
+                                View Collections
+                            </Link>
 
-    </div>
-  );
+                        </div>
+
+                    </div>
+                </SwiperSlide>
+
+            </Swiper>
+
+        </div>
+    );
 }

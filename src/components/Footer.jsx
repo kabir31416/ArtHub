@@ -11,7 +11,7 @@ import {
 
 const Footer = () => {
     return (
-        <footer className="bg-gradient-to-b from-slate-950 via-slate-900 to-zinc-950 text-white border-t border-white/10">
+        <footer className="bg-linear-to-b from-slate-950 via-slate-900 to-zinc-950 text-white border-t border-white/10">
 
             <div className="max-w-7xl mx-auto px-6 py-16">
 
@@ -19,7 +19,7 @@ const Footer = () => {
 
                     {/* Brand Section */}
                     <div>
-                        <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-500 to-purple-600 bg-clip-text text-transparent">
+                        <h1 className="text-3xl font-bold bg-linear-to-r from-orange-500 to-purple-600 bg-clip-text text-transparent">
                             ArtHub
                         </h1>
 
