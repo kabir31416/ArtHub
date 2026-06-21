@@ -1,4 +1,6 @@
-export default function Profile() {
+import React from 'react';
+
+const page = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mb-5">Profile</h1>
@@ -13,4 +15,6 @@ export default function Profile() {
       </div>
     </div>
   );
-}
+};
+
+export default page;

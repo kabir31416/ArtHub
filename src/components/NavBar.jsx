@@ -37,7 +37,7 @@ const Navbar = () => {
 
   const dashboardLinks = [
     { title: "Dashboard", href: "/dashboard" },
-    { title: "Profile", href: "/profile" },
+    { title: "Profile", href: "/dashboard/user/profile" },
   ];
 
   // scroll effect
