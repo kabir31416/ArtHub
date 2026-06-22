@@ -1,9 +1,8 @@
 "use client";
 
-
-
+import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   ShoppingCart,
@@ -15,24 +14,19 @@ import {
   CreditCard,
   BarChart3,
   LogOut,
+  Menu,
+  X,
 } from "lucide-react";
-import { useSession } from "../lib/auth-client";
+
+import { authClient, useSession } from "../lib/auth-client";
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
+  const router = useRouter();
 
-  const { data: session} = useSession();
+  const { data: session } = useSession();
 
-   const handleLogout = async () => {
-      try {
-        await authClient.signOut();
-        router.push("/");
-        router.refresh();
-      } catch (err) {
-        console.error("Logout failed:", err);
-      }
-    };
-
+  const [open, setOpen] = useState(false);
 
   const role = pathname.split("/")[2] || "user";
   const base = `/dashboard/${role}`;
@@ -58,7 +52,6 @@ export default function DashboardLayout({ children }) {
       { name: "Bought Artworks", href: `${base}/bought`, icon: "bought" },
       { name: "Profile", href: `${base}/profile`, icon: "profile" },
     ],
-
     artist: [
       { name: "Overview", href: base, icon: "overview" },
       { name: "My Artworks", href: `${base}/artworks`, icon: "myArtworks" },
@@ -66,7 +59,6 @@ export default function DashboardLayout({ children }) {
       { name: "Sales", href: `${base}/sales`, icon: "sales" },
       { name: "Profile", href: `${base}/profile`, icon: "profile" },
     ],
-
     admin: [
       { name: "Overview", href: base, icon: "overview" },
       { name: "Users", href: `${base}/users`, icon: "users" },
@@ -76,10 +68,56 @@ export default function DashboardLayout({ children }) {
     ],
   };
 
+  const handleLogout = async () => {
+    try {
+      await authClient?.signOut?.();
+      router.push("/");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-[#050505] text-white">
-      <aside className="w-72 h-screen sticky top-0 bg-[#0A0A0B] border-r border-white/5 flex flex-col justify-between px-5 py-6">
+
+      {/* MOBILE TOP BAR */}
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-[#0A0A0B] border-b border-white/5 flex items-center justify-between px-4 z-50">
+        <button onClick={() => setOpen(true)}>
+          <Menu />
+        </button>
+
+        <h1 className="font-bold">ArtHub</h1>
+      </div>
+
+      {/* OVERLAY */}
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+        />
+      )}
+
+      {/* SIDEBAR */}
+      <aside
+        className={`
+          fixed lg:static top-0 left-0 z-50
+          w-72 h-full lg:h-screen
+          bg-[#0A0A0B] border-r border-white/5
+          flex flex-col justify-between px-5 py-6
+          transition-transform duration-300
+          ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
         <div>
+
+          {/* CLOSE BUTTON (mobile) */}
+          <div className="lg:hidden flex justify-end mb-4">
+            <button onClick={() => setOpen(false)}>
+              <X />
+            </button>
+          </div>
+
           <div className="mb-4 px-3 text-xl uppercase text-zinc-600">
             Dashboard
           </div>
@@ -92,71 +130,52 @@ export default function DashboardLayout({ children }) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 ${
+                  onClick={() => setOpen(false)}
+                  className={`flex items-center gap-4 px-4 py-3 rounded-2xl transition ${
                     isActive
-                      ? "bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-violet-900/30"
-                      : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
+                      ? "bg-violet-600 text-white"
+                      : "text-zinc-400 hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  <span>
-                    {iconMap[item.icon]}
-                  </span>
-
-                  <span className="font-medium">
-                    {item.name}
-                  </span>
+                  {iconMap[item.icon]}
+                  <span>{item.name}</span>
                 </Link>
               );
             })}
           </nav>
         </div>
 
-        <div>
-          <div className="my-4 p-4 rounded-3xl bg-gradient-to-br from-violet-600/10 to-fuchsia-600/10 border border-violet-500/10">
-            <p className="text-sm font-semibold text-white">
-              Upgrade to Pro
-            </p>
+        {/* USER */}
+        <div className="p-3 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <img
+              src="https://i.pravatar.cc/100"
+              className="w-10 h-10 rounded-xl"
+            />
 
-            <p className="text-xs text-zinc-500 mt-1">
-              Sell unlimited artworks and access premium analytics.
-            </p>
-
-            <button className="mt-4 w-full py-2.5 rounded-xl bg-white text-black text-sm font-semibold hover:opacity-90 transition">
-              Upgrade
-            </button>
-          </div>
-
-          <div className="p-3 my-3 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img
-                src="https://i.pravatar.cc/100"
-                alt="Profile"
-                className="w-11 h-11 rounded-xl object-cover"
-              />
-
-              <div>
-                <h4 className="text-sm font-semibold text-white">
-                  {session?.user?.name}
-                </h4>
-
-                <p className="text-xs text-zinc-500 capitalize">
-                  {session?.user?.role}
-                </p>
-              </div>
+            <div>
+              <h4 className="text-sm font-semibold">
+                {session?.user?.name}
+              </h4>
+              <p className="text-xs text-zinc-400">
+                {session?.user?.role}
+              </p>
             </div>
-
-            <button onClick={handleLogout}  className="w-10 h-10 rounded-xl flex items-center justify-center text-zinc-500 hover:text-red-500 hover:bg-red-500/10 transition">
-              <LogOut size={18} />
-            </button>
           </div>
+
+          <button onClick={handleLogout}>
+            <LogOut size={18} />
+          </button>
         </div>
       </aside>
 
-      <main className="flex-1 overflow-y-auto bg-[#050505]">
-        <div className="p-8 lg:p-10">
+      {/* MAIN */}
+      <main className="flex-1 lg:ml-0 ml-0 pt-14 lg:pt-0 overflow-y-auto">
+        <div className="p-6 lg:p-10">
           {children}
         </div>
       </main>
+
     </div>
   );
 }
