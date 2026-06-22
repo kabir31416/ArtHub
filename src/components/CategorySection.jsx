@@ -9,7 +9,7 @@ const categories = [
     image:
       "https://images.unsplash.com/photo-1545239351-1141bd82e8a6",
     color: "from-orange-500 to-purple-600",
-    link: "/categories/digital-art",
+    link: "/artworks?category=Digital+Art",
   },
   {
     title: "Paintings",
@@ -17,23 +17,23 @@ const categories = [
     image:
       "https://images.unsplash.com/photo-1541961017774-22349e4a1262",
     color: "from-purple-600 to-pink-500",
-    link: "/categories/paintings",
+    link: "/artworks?category=Painting",
   },
   {
-    title: "Photography",
+    title: "Concept Art",
     desc: "Professional captured moments",
     image:
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
     color: "from-orange-500 to-red-500",
-    link: "/categories/photography",
+    link: "/artworks?category=Concept+Art",
   },
   {
     title: "Sculpture",
-    desc: "3D artistic sculptures & models",
+    desc: "3D artistic sculptures & models ",
     image:
       "https://images.unsplash.com/photo-1529154166925-574a0236a4f4",
     color: "from-purple-500 to-orange-500",
-    link: "/categories/sculpture",
+    link: "/artworks?category=3D+Abstract",
   },
 ];
 

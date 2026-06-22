@@ -10,7 +10,6 @@ import {
   FaSearch,
   FaBars,
   FaTimes,
-  FaUserCircle,
   FaChevronDown,
 } from "react-icons/fa";
 
@@ -28,6 +27,7 @@ const Navbar = () => {
 
   const { data: session, isLoading } = useSession();
 
+  const role = session?.user?.role || "user";
   const isLoggedIn = Boolean(session?.user?.id);
 
   const navLinks = [
@@ -35,22 +35,42 @@ const Navbar = () => {
     { title: "Browse Artworks", href: "/artworks" },
   ];
 
-  const dashboardLinks = [
-    { title: "Dashboard", href: "/dashboard" },
-    { title: "Profile", href: "/dashboard/user/profile" },
-  ];
+  const dashboardLinks = {
+    user: [
+      { title: "Dashboard", href: "/dashboard/user" },
+      { title: "Purchases", href: "/dashboard/user/purchases" },
+      { title: "Profile", href: "/dashboard/user/profile" },
+    ],
 
-  // scroll effect
+    artist: [
+      { title: "Dashboard", href: "/dashboard/artist" },
+      { title: "My Artworks", href: "/dashboard/artist/artworks" },
+      { title: "Add Artwork", href: "/dashboard/artist/add" },
+      { title: "Sales", href: "/dashboard/artist/sales" },
+      { title: "Profile", href: "/dashboard/artist/profile" },
+    ],
+
+    admin: [
+      { title: "Dashboard", href: "/dashboard/admin" },
+      { title: "Users", href: "/dashboard/admin/users" },
+      { title: "Artworks", href: "/dashboard/admin/artworks" },
+      { title: "Transactions", href: "/dashboard/admin/transactions" },
+      { title: "Analytics", href: "/dashboard/admin/analytics" },
+    ],
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  // close dropdown outside click
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -62,13 +82,16 @@ const Navbar = () => {
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
-  // logout
   const handleLogout = async () => {
     try {
       await authClient.signOut();
+
       router.push("/");
       router.refresh();
     } catch (err) {
@@ -76,7 +99,6 @@ const Navbar = () => {
     }
   };
 
-  // loading state
   if (isLoading) {
     return (
       <nav className="h-20 bg-gray-950 border-b border-white/10 flex items-center px-5">
@@ -91,29 +113,33 @@ const Navbar = () => {
     <nav
       className={`sticky top-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "backdrop-blur-md bg-slate-900/70 border-b border-white/10 shadow-lg"
+          ? "backdrop-blur-xl bg-slate-950/70 border-b border-white/10 shadow-xl"
           : "bg-gray-950 border-b border-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-5">
-        <div className="h-20 flex justify-between items-center">
+        <div className="h-20 flex items-center justify-between gap-5">
 
           {/* LOGO */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 rounded-xl bg-linear-to-r from-orange-500 to-purple-600 flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-3 shrink-0">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 flex items-center justify-center">
               <FaPalette className="text-white text-xl" />
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold text-white">ArtHub</h1>
-              <p className="text-[10px] text-zinc-400 uppercase">
+              <h1 className="text-2xl font-bold text-white">
+                ArtHub
+              </h1>
+
+              <p className="text-[10px] uppercase text-zinc-400">
                 Marketplace
               </p>
             </div>
           </Link>
 
-          {/* NAV LINKS */}
+          {/* DESKTOP NAV */}
           <div className="hidden lg:flex items-center gap-8">
+
             {navLinks.map((item) => {
               const isActive = pathname === item.href;
 
@@ -121,7 +147,7 @@ const Navbar = () => {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-sm font-medium transition ${
+                  className={`relative text-sm font-medium transition duration-300 ${
                     isActive
                       ? "text-white"
                       : "text-zinc-400 hover:text-white"
@@ -131,25 +157,32 @@ const Navbar = () => {
 
                   {isActive && (
                     <motion.div
-                      layoutId="underline"
-                      className="h-0.5 bg-orange-500 mt-1"
+                      layoutId="navbar-indicator"
+                      className="absolute left-0 -bottom-2 h-[2px] w-full bg-orange-500 rounded-full"
                     />
                   )}
                 </Link>
               );
             })}
 
-            {/* DASHBOARD */}
             {isLoggedIn && (
-              <div className="relative" ref={dropdownRef}>
+              <div
+                className="relative"
+                ref={dropdownRef}
+              >
                 <button
-                  onClick={() => setDashboardOpen(!dashboardOpen)}
-                  className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white"
+                  onClick={() =>
+                    setDashboardOpen(!dashboardOpen)
+                  }
+                  className="flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition"
                 >
                   Dashboard
+
                   <FaChevronDown
-                    className={`transition-transform ${
-                      dashboardOpen ? "rotate-180" : ""
+                    className={`transition-transform duration-300 ${
+                      dashboardOpen
+                        ? "rotate-180"
+                        : ""
                     }`}
                   />
                 </button>
@@ -157,21 +190,40 @@ const Navbar = () => {
                 <AnimatePresence>
                   {dashboardOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-10 left-0 w-52 bg-slate-900 border border-white/10 rounded-xl p-2"
+                      initial={{
+                        opacity: 0,
+                        scale: 0.95,
+                        y: 10,
+                      }}
+                      animate={{
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                      }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.95,
+                        y: 10,
+                      }}
+                      transition={{
+                        duration: 0.2,
+                      }}
+                      className="absolute top-12 left-0 w-56 rounded-2xl border border-white/10 bg-slate-900/95 backdrop-blur-xl p-2 shadow-2xl"
                     >
-                      {dashboardLinks.map((link) => (
-                        <Link
-                          key={link.href}
-                          href={link.href}
-                          onClick={() => setDashboardOpen(false)}
-                          className="block px-3 py-2 text-sm text-zinc-300 hover:bg-white/5 rounded"
-                        >
-                          {link.title}
-                        </Link>
-                      ))}
+                      {dashboardLinks[role]?.map(
+                        (link) => (
+                          <Link
+                            key={link.href}
+                            href={link.href}
+                            onClick={() =>
+                              setDashboardOpen(false)
+                            }
+                            className="block px-4 py-3 rounded-lg text-sm text-zinc-300 hover:bg-white/5 transition"
+                          >
+                            {link.title}
+                          </Link>
+                        )
+                      )}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -179,22 +231,58 @@ const Navbar = () => {
             )}
           </div>
 
+          {/* SEARCH BAR */}
+          <div className="hidden xl:flex flex-1 max-w-md">
+            <div className="relative w-full">
+              <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+
+              <input
+                type="text"
+                placeholder="Search artworks..."
+                className="
+                  w-full
+                  pl-11
+                  pr-4
+                  py-2.5
+                  rounded-full
+                  bg-white/5
+                  border
+                  border-white/10
+                  text-white
+                  placeholder:text-zinc-500
+                  focus:outline-none
+                  focus:border-orange-500
+                  transition
+                "
+              />
+            </div>
+          </div>
+
           {/* USER AREA */}
           <div className="hidden lg:flex items-center gap-4">
+
             {isLoggedIn ? (
               <div className="flex items-center gap-3">
-                <FaUserCircle className="text-white text-xl" />
 
-                <div className="text-white text-sm">
-                  <p>{session?.user?.name}</p>
-                  <p className="text-xs text-zinc-400">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-r from-orange-500 to-purple-600 flex items-center justify-center text-white font-semibold">
+                  {session?.user?.name
+                    ?.charAt(0)
+                    ?.toUpperCase()}
+                </div>
+
+                <div>
+                  <p className="text-white text-sm font-medium">
+                    {session?.user?.name}
+                  </p>
+
+                  <p className="text-xs text-zinc-400 capitalize">
                     {session?.user?.role}
                   </p>
                 </div>
 
                 <button
                   onClick={handleLogout}
-                  className="text-red-400 text-sm ml-3"
+                  className="ml-2 px-4 py-2 cursor-pointer rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 transition text-sm"
                 >
                   Logout
                 </button>
@@ -202,7 +290,7 @@ const Navbar = () => {
             ) : (
               <Link
                 href="/auth/sign-in"
-                className="px-5 py-2 text-sm rounded-full bg-linear-to-r from-orange-500 to-purple-600 text-white"
+                className="px-5 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-purple-600 text-white text-sm font-medium hover:opacity-90 transition"
               >
                 Login
               </Link>
@@ -211,10 +299,16 @@ const Navbar = () => {
 
           {/* MOBILE BUTTON */}
           <button
-            className="lg:hidden text-white"
-            onClick={() => setMobileOpen(!mobileOpen)}
+            className="lg:hidden text-white text-xl"
+            onClick={() =>
+              setMobileOpen(!mobileOpen)
+            }
           >
-            {mobileOpen ? <FaTimes /> : <FaBars />}
+            {mobileOpen ? (
+              <FaTimes />
+            ) : (
+              <FaBars />
+            )}
           </button>
         </div>
       </div>
@@ -223,19 +317,41 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
+            initial={{
+              height: 0,
+              opacity: 0,
+            }}
+            animate={{
+              height: "auto",
+              opacity: 1,
+            }}
+            exit={{
+              height: 0,
+              opacity: 0,
+            }}
             className="lg:hidden bg-slate-900 border-t border-white/10 overflow-hidden"
           >
-            <div className="p-5 space-y-4">
+            <div className="p-5 space-y-3">
+
+              {/* Mobile Search */}
+              <div className="relative mb-4">
+                <FaSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-500" />
+
+                <input
+                  type="text"
+                  placeholder="Search artworks..."
+                  className="w-full pl-11 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white outline-none"
+                />
+              </div>
 
               {navLinks.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="block text-zinc-300"
+                  onClick={() =>
+                    setMobileOpen(false)
+                  }
+                  className="block px-4 py-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-zinc-300 transition"
                 >
                   {item.title}
                 </Link>
@@ -243,20 +359,24 @@ const Navbar = () => {
 
               {isLoggedIn ? (
                 <>
-                  {dashboardLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="block text-zinc-300"
-                    >
-                      {link.title}
-                    </Link>
-                  ))}
+                  {dashboardLinks[role]?.map(
+                    (link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        onClick={() =>
+                          setMobileOpen(false)
+                        }
+                        className="block px-4 py-3 rounded-lg bg-white/[0.03] hover:bg-white/[0.06] text-zinc-300 transition"
+                      >
+                        {link.title}
+                      </Link>
+                    )
+                  )}
 
                   <button
                     onClick={handleLogout}
-                    className="text-red-400"
+                    className="w-full py-3 rounded-lg bg-red-500/10 text-red-400"
                   >
                     Logout
                   </button>
@@ -264,7 +384,7 @@ const Navbar = () => {
               ) : (
                 <Link
                   href="/auth/sign-in"
-                  className="block text-center bg-orange-500 text-white py-2 rounded-lg"
+                  className="block text-center py-3 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 text-white font-medium"
                 >
                   Login
                 </Link>
