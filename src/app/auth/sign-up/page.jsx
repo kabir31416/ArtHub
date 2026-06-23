@@ -34,8 +34,8 @@ export default function SignUpPage() {
             const { data, error } = await authClient.signUp.email({
                 name,
                 email,
-                password,
                 role,
+                password,
             });
 
             if (error) {

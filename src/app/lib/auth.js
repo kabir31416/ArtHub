@@ -9,7 +9,7 @@ import { MongoClient } from "mongodb";
 const uri = process.env.MONGODB_URI;
 
 if (!uri) {
-  throw new Error("MONGODB_URI is missing");
+    throw new Error("MONGODB_URI is missing");
 }
 
 const client = new MongoClient(uri);
@@ -23,7 +23,7 @@ export const auth = betterAuth({
 
     emailAndPassword: {
         enabled: true,
-        minPasswordLength:6,
+        minPasswordLength: 6,
     },
 
     socialProviders: {
@@ -40,12 +40,36 @@ export const auth = betterAuth({
                 required: true,
                 defaultValue: "user",
             },
+
+            subscriptionTier: {
+                type: "string",
+                required: false,
+                defaultValue: "free",
+            },
+
+            maxPurchases: {
+                type: "number",
+                required: false,
+                defaultValue: 3,
+            },
+
+            purchasedCount: {
+                type: "number",
+                required: false,
+                defaultValue: 0,
+            },
+
+            subscriptionStatus: {
+                type: "string",
+                required: false,
+                defaultValue: "active",
+            },
         },
     },
 
     //session config
     session: {
-        expiresIn: 60 * 60 * 24 * 7, 
+        expiresIn: 60 * 60 * 24 * 7,
     },
 
     trustedOrigins: [
