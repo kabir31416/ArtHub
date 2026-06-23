@@ -110,7 +110,7 @@ export default function ArtworkDetailsPage() {
       const data = await res.json();
 
       if (data.success) {
-        setArtwork(data.data); 
+        setArtwork(data.data);
         setOpen(false);
         setSelected(null);
       } else {
@@ -134,10 +134,48 @@ export default function ArtworkDetailsPage() {
       const data = await res.json();
 
       if (data.success) {
-        router.push("/"); 
+        router.push("/");
       }
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handlePurchase = async () => {
+    try {
+
+      const purchaseData = {
+        artworkId: artwork._id,
+        title: artwork.title,
+        image: artwork.image,
+        price: artwork.price,
+        artistName: artwork.artistName,
+        artistEmail: artwork.artistEmail,
+        buyerName: session?.user?.name,
+        buyerEmail: session?.user?.email,
+        buyerImage: session?.user?.image,
+      };
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/purchase`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(purchaseData),
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Purchase Successful");
+      }
+
+    } catch (error) {
+      console.log(error);
+      alert("Purchase Failed");
     }
   };
 
@@ -183,7 +221,7 @@ export default function ArtworkDetailsPage() {
             {/* BUTTONS */}
             <div className="mt-6 flex gap-3">
               <button
-                onClick={() => router.push(`/checkout/${artwork._id}`)}
+              onClick={handlePurchase}
                 disabled={isOwner}
                 className="flex-1 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-purple-600 font-medium flex items-center justify-center gap-2 hover:opacity-90 transition disabled:opacity-40"
               >
@@ -274,7 +312,7 @@ export default function ArtworkDetailsPage() {
             </p>
           </div>
 
-        
+
           <CommentsSection artId={id} />
 
         </div>
@@ -286,7 +324,7 @@ export default function ArtworkDetailsPage() {
         onClose={() => setOpen(false)}
         onSubmit={handleUpdate}
         initialData={selected}
-        categories={["Digital Art","Illustration","Photography","Painting","NFT Art","3D Art","Abstract",]}
+        categories={["Digital Art", "Illustration", "Photography", "Painting", "NFT Art", "3D Art", "Abstract",]}
       />
     </div>
   );

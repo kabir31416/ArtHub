@@ -95,9 +95,6 @@ export default function AddArtwork() {
         artistEmail: session?.user?.email || "artist@arthub.com",
       };
 
-      console.log("FINAL DATA:", payload);
-
-
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/artworks`,
         {
