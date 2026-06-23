@@ -4,18 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
-  LayoutDashboard,
-  ShoppingCart,
-  Paintbrush,
-  Users,
-  PlusCircle,
-  DollarSign,
-  User,
-  CreditCard,
-  BarChart3,
-  LogOut,
-  Menu,
-  X,
+  LayoutDashboard, ShoppingCart, Paintbrush, Users, PlusCircle, DollarSign, User, CreditCard,
+  BarChart3, LogOut, Menu, X,
 } from "lucide-react";
 
 import { authClient, useSession } from "../lib/auth-client";
@@ -99,15 +89,7 @@ export default function DashboardLayout({ children }) {
       )}
 
       {/* SIDEBAR */}
-      <aside
-        className={`
-          fixed lg:static top-0 left-0 z-50
-          w-72 h-full lg:h-screen
-          bg-[#0A0A0B] border-r border-white/5
-          flex flex-col justify-between px-5 py-6
-          transition-transform duration-300
-          ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
-        `}
+      <aside className={`fixed lg:sticky top-0 left-0 z-50 w-72 min-h-screen bg-[#0A0A0B] border-r border-white/5 flex flex-col justify-between px-5 py-6 transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} `}
       >
         <div>
 
@@ -131,11 +113,10 @@ export default function DashboardLayout({ children }) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`flex items-center gap-4 px-4 py-3 rounded-2xl transition ${
-                    isActive
-                      ? "bg-violet-600 text-white"
-                      : "text-zinc-400 hover:text-white hover:bg-white/5"
-                  }`}
+                  className={`flex items-center gap-4 px-4 py-3 rounded-2xl transition ${isActive
+                    ? "bg-violet-600 text-white"
+                    : "text-zinc-400 hover:text-white hover:bg-white/5"
+                    }`}
                 >
                   {iconMap[item.icon]}
                   <span>{item.name}</span>
