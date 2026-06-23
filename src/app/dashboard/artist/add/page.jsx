@@ -149,6 +149,7 @@ export default function AddArtwork() {
       </div>
 
       <div className="bg-[#111114] border border-white/5 rounded-3xl p-8">
+
         <form onSubmit={handleSubmit} className="space-y-6">
 
           {/* TITLE */}
@@ -259,6 +260,7 @@ export default function AddArtwork() {
           </button>
 
         </form>
+        
       </div>
     </div>
   );
