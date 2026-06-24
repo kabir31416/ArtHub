@@ -7,7 +7,7 @@ const categories = [
     title: "Digital Art",
     desc: "Modern AI & digital creations",
     image:
-      "https://images.unsplash.com/photo-1545239351-1141bd82e8a6",
+      "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1600&q=70",
     color: "from-orange-500 to-purple-600",
     link: "/artworks?category=Digital+Art",
   },
@@ -15,7 +15,7 @@ const categories = [
     title: "Paintings",
     desc: "Classic hand-painted artworks",
     image:
-      "https://images.unsplash.com/photo-1541961017774-22349e4a1262",
+      "https://images.unsplash.com/photo-1541961017774-22349e4a1262?auto=format&fit=crop&w=1600&q=70",
     color: "from-purple-600 to-pink-500",
     link: "/artworks?category=Painting",
   },
@@ -23,7 +23,7 @@ const categories = [
     title: "Concept Art",
     desc: "Professional captured moments",
     image:
-      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
+      "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=70",
     color: "from-orange-500 to-red-500",
     link: "/artworks?category=Concept+Art",
   },
@@ -31,7 +31,7 @@ const categories = [
     title: "Sculpture",
     desc: "3D artistic sculptures & models ",
     image:
-      "https://images.unsplash.com/photo-1529154166925-574a0236a4f4",
+      "https://images.unsplash.com/photo-1529154166925-574a0236a4f4?auto=format&fit=crop&w=1600&q=70",
     color: "from-purple-500 to-orange-500",
     link: "/artworks?category=3D+Abstract",
   },

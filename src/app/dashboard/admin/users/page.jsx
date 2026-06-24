@@ -156,7 +156,7 @@ export default function ManageUsers() {
             {filteredUsers.map((user) => (
               <tr
                 key={user._id}
-                className="border-b border-white/5 hover:bg-white/[0.02]"
+                className="border-b border-white/5 hover:bg-white/2"
               >
                 {/* User */}
                 <td className="p-3">

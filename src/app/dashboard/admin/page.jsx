@@ -191,10 +191,10 @@ export default function AdminDashboard() {
             <PieChart>
               <Pie
                 data={categories}
-                dataKey="count"          
-                nameKey="categoryName"   
-                cx="50%"                 
-                cy="50%"           
+                dataKey="count"
+                nameKey="categoryName"
+                cx="50%"
+                cy="50%"
                 outerRadius={120}
                 label={(entry) => entry.categoryName}
               >
@@ -213,76 +213,119 @@ export default function AdminDashboard() {
 
       {/* Recent Transactions */}
       <div className="bg-[#111114] border border-white/10 rounded-3xl overflow-hidden">
-        <div className="p-3 border-b border-white/10">
+        <div className="p-4 border-b border-white/10 flex items-center justify-between">
           <h2 className="text-xl font-bold">
             Recent Transactions
           </h2>
+
+          <span className="text-sm text-zinc-400">
+            {transactions.length} Records
+          </span>
         </div>
 
-        <table className="w-full">
-          <thead>
-            <tr className="border-b border-white/10 text-zinc-400">
-              <th className="p-3 text-left">
-                Transaction ID
-              </th>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-white/10 text-zinc-400 text-sm">
+                <th className="p-4 text-left">
+                  Transaction ID
+                </th>
 
-              <th className="p-3 text-left">
-                Type
-              </th>
+                <th className="p-4 text-left">
+                  Type
+                </th>
 
-              <th className="p-3 text-left">
-                User Email
-              </th>
+                <th className="p-4 text-left">
+                  User Email
+                </th>
 
-              <th className="p-3 text-left">
-                Artist Email
-              </th>
+                <th className="p-4 text-left">
+                  Artist Email
+                </th>
 
-              <th className="p-3 text-left">
-                Amount
-              </th>
+                <th className="p-4 text-left">
+                  Plan
+                </th>
 
-              <th className="p-3 text-left">
-                Date
-              </th>
-            </tr>
-          </thead>
+                <th className="p-4 text-left">
+                  Amount
+                </th>
 
-          <tbody>
-            {transactions.map((item) => (
-              <tr
-                key={item.id}
-                className="border-b border-white/5 hover:bg-white/[0.02]"
-              >
-                <td className="p-3">
-                  {item.id?.slice(-8)}
-                </td>
-
-                <td className="p-3 capitalize">
-                  {item.type}
-                </td>
-
-                <td className="p-3">
-                  {item.email}
-                </td>
-
-                <td className="p-3">
-                  {item.artistEmail}
-                </td>
-
-                <td className="p-3 font-semibold text-green-400">
-                  ${item.amount}
-                </td>
-
-                <td className="p-3 text-zinc-400">
-                  {new Date(
-                    item.date
-                  ).toLocaleDateString()}
-                </td>
+                <th className="p-4 text-left">
+                  Date
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {transactions?.length > 0 ? (
+                transactions.map((item) => (
+                  <tr
+                    key={item._id}
+                    className="border-b border-white/5 hover:bg-white/5 transition"
+                  >
+                    <td className="p-4 font-mono text-sm">
+                      {item._id?.toString()?.slice(-8)}
+                    </td>
+
+                    <td className="p-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${item.type === "subscription"
+                            ? "bg-violet-500/20 text-violet-400"
+                            : "bg-green-500/20 text-green-400"
+                          }`}
+                      >
+                        {item.type}
+                      </span>
+                    </td>
+
+                    <td className="p-4">
+                      {item.userEmail ||
+                        item.buyerEmail ||
+                        "-"}
+                    </td>
+
+                    <td className="p-4">
+                      {item.artistEmail || "-"}
+                    </td>
+
+                    <td className="p-4 capitalize">
+                      {item.tier || "-"}
+                    </td>
+
+                    <td className="p-4 font-bold text-green-400">
+                      $
+                      {Number(
+                        item.amount || 0
+                      ).toFixed(2)}
+                    </td>
+
+                    <td className="p-4 text-zinc-400 text-sm">
+                      {item.createdAt
+                        ? new Date(
+                          item.createdAt
+                        ).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })
+                        : "-"}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td
+                    colSpan="7"
+                    className="text-center py-12 text-zinc-500"
+                  >
+                    No transactions found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

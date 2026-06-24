@@ -81,7 +81,7 @@ export default function Sales() {
               {sales.map((item) => (
                     <tr
                       key={item._id}
-                      className="border-b border-white/5 hover:bg-white/[0.02]"
+                      className="border-b border-white/5 hover:bg-white/2"
                     >
                       {/* Artwork */}
                       <td className="p-2">

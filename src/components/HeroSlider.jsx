@@ -25,10 +25,10 @@ export default function HeroSlider() {
 
                         {/* Background Image */}
                         <div
-                            className="absolute inset-0 bg-cover bg-center scale-110 blur-sm"
+                            className="absolute inset-0 bg-cover bg-center scale-105"
                             style={{
                                 backgroundImage:
-                                    "url('https://images.unsplash.com/photo-1652398859643-dbe3299f19cf')",
+                                    "url('https://images.unsplash.com/photo-1652398859643-dbe3299f19cf?auto=format&fit=crop&w=1600&q=70')",
                             }}
                         />
 
@@ -64,10 +64,10 @@ export default function HeroSlider() {
                     <div className="relative h-[85vh] overflow-hidden">
 
                         <div
-                            className="absolute inset-0 bg-cover bg-center scale-110 blur-sm"
+                            className="absolute inset-0 bg-cover bg-center scale-105"
                             style={{
                                 backgroundImage:
-                                    "url('https://images.unsplash.com/photo-1461344577544-4e5dc9487184')",
+                                    "url('https://images.unsplash.com/photo-1461344577544-4e5dc9487184?auto=format&fit=crop&w=1600&q=70')",
                             }}
                         />
 
@@ -101,10 +101,10 @@ export default function HeroSlider() {
                     <div className="relative h-[85vh] overflow-hidden">
 
                         <div
-                            className="absolute inset-0 bg-cover bg-center scale-110 blur-sm"
+                            className="absolute inset-0 bg-cover bg-center scale-105"
                             style={{
                                 backgroundImage:
-                                    "url('https://images.unsplash.com/photo-1560421683-6856ea585c78')",
+                                    "url('https://images.unsplash.com/photo-1560421683-6856ea585c78?auto=format&fit=crop&w=1600&q=70')",
                             }}
                         />
 

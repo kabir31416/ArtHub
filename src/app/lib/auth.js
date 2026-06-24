@@ -41,6 +41,11 @@ export const auth = betterAuth({
                 defaultValue: "user",
             },
 
+            image: {
+                type: "string",
+                required: false,
+            },
+
             subscriptionTier: {
                 type: "string",
                 required: false,
@@ -73,6 +78,6 @@ export const auth = betterAuth({
     },
 
     trustedOrigins: [
-        "http://localhost:3000",
+        process.env.BETTER_AUTH_URL,
     ],
 });

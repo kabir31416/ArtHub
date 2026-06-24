@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import {
   FaSearch,
@@ -141,23 +142,23 @@ export default function ManageArtworks() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/10 text-zinc-400">
-                <th className="p-5 text-left">
+                <th className="p-3 text-left">
                   Artwork
                 </th>
 
-                <th className="p-5 text-left">
+                <th className="p-3 text-left">
                   Artist
                 </th>
 
-                <th className="p-5 text-left">
+                <th className="p-3 text-left">
                   Category
                 </th>
 
-                <th className="p-5 text-left">
+                <th className="p-3 text-left">
                   Price
                 </th>
 
-                <th className="p-5 text-left">
+                <th className="p-3 text-left">
                   Action
                 </th>
               </tr>
@@ -167,15 +168,17 @@ export default function ManageArtworks() {
               {filteredArtworks.map((art) => (
                 <tr
                   key={art._id}
-                  className="border-b border-white/5 hover:bg-white/[0.02]"
+                  className="border-b border-white/5 hover:bg-white/2"
                 >
                   {/* Artwork */}
-                  <td className="p-5">
+                  <td className="p-3">
                     <div className="flex items-center gap-4">
-                      <img
+                      <Image
                         src={art.image}
                         alt={art.title}
-                        className="w-16 h-16 rounded-xl object-cover"
+                        width={100}
+                        height={100}
+                        className="w-14 h-14 rounded-xl object-cover"
                       />
 
                       <div>
@@ -191,7 +194,7 @@ export default function ManageArtworks() {
                   </td>
 
                   {/* Artist */}
-                  <td className="p-5">
+                  <td className="p-3">
                     <div>
                       <h4>
                         {art.artistName}
@@ -204,19 +207,19 @@ export default function ManageArtworks() {
                   </td>
 
                   {/* Category */}
-                  <td className="p-5">
+                  <td className="p-3">
                     <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-sm">
                       {art.category}
                     </span>
                   </td>
 
                   {/* Price */}
-                  <td className="p-5 font-semibold text-green-400">
+                  <td className="p-3 font-semibold text-green-400">
                     ${art.price}
                   </td>
 
                   {/* Delete */}
-                  <td className="p-5">
+                  <td className="p-3">
                     <button
                       onClick={() => {
                         setSelectedArtwork(art);
