@@ -1,23 +1,29 @@
+"use client";
+
 export default function Transactions() {
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-5">Transactions</h1>
+      <h1 className="text-3xl font-bold mb-6">
+        Transactions
+      </h1>
 
-      <table className="w-full text-left">
-        <tr>
-          <th>ID</th>
-          <th>User</th>
-          <th>Amount</th>
-          <th>Date</th>
-        </tr>
+      <div className="bg-[#111114] rounded-3xl border border-white/10 overflow-hidden">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-white/10">
+              <th className="p-5">Transaction ID</th>
+              <th className="p-5">Type</th>
+              <th className="p-5">Email</th>
+              <th className="p-5">Amount</th>
+              <th className="p-5">Date</th>
+            </tr>
+          </thead>
 
-        <tr>
-          <td>#1</td>
-          <td>user@mail.com</td>
-          <td>$10</td>
-          <td>2026</td>
-        </tr>
-      </table>
+          <tbody>
+            {/* map transactions */}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

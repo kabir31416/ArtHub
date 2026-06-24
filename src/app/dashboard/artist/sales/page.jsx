@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { useSession } from "@/app/lib/auth-client";
 import { FaChartLine } from "react-icons/fa";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Sales() {
   const { data: session } = useSession();
@@ -41,7 +43,7 @@ export default function Sales() {
   return (
     <div>
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <FaChartLine className="text-2xl text-green-400" />
           <h1 className="text-3xl font-bold">Sales History</h1>
@@ -68,62 +70,66 @@ export default function Sales() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-white/10 text-zinc-400">
-                <th className="p-5 text-left">Artwork</th>
-                <th className="p-5 text-left">Buyer</th>
-                <th className="p-5 text-left">Amount</th>
-                <th className="p-5 text-left">Date</th>
+                <th className="p-2 text-left">Artwork</th>
+                <th className="p-2 text-left">Buyer</th>
+                <th className="p-2 text-left">Amount</th>
+                <th className="p-2 text-left">Date</th>
               </tr>
             </thead>
 
             <tbody>
               {sales.map((item) => (
-                <tr
-                  key={item._id}
-                  className="border-b border-white/5 hover:bg-white/[0.02]"
-                >
-                  {/* Artwork */}
-                  <td className="p-5">
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={item.image}
-                        alt={item.title}
-                        className="w-14 h-14 rounded-xl object-cover"
-                      />
+                    <tr
+                      key={item._id}
+                      className="border-b border-white/5 hover:bg-white/[0.02]"
+                    >
+                      {/* Artwork */}
+                      <td className="p-2">
+                        <div className="flex items-center gap-4">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            width={14}
+                            height={14}
+                            className="w-14 h-14 rounded-xl object-cover"
+                          />
 
-                      <div>
-                        <h4 className="font-semibold">
-                          {item.title}
-                        </h4>
+                          <div>
+                            <Link href={`/artworks/${item.artworkId}`}>
+                            <h4 className="font-semibold">
+                              {item.title}
+                            </h4>
+                            </Link>
 
-                        <p className="text-sm text-zinc-500">
-                          {item.category}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
+                            <p className="text-sm text-zinc-500">
+                              {item.category}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
 
-                  {/* Buyer */}
-                  <td className="p-5">
-                    <div className="font-medium">
-                      {item.buyerName || "Anonymous"}
-                    </div>
-                    <div className="text-sm text-zinc-500">
-                      {item.buyerEmail}
-                    </div>
-                  </td>
+                      {/* Buyer */}
+                      <td className="p-2">
+                        <div className="font-medium">
+                          {item.buyerName || "Anonymous"}
+                        </div>
+                        <div className="text-sm text-zinc-500">
+                          {item.buyerEmail}
+                        </div>
+                      </td>
 
-                  {/* Price */}
-                  <td className="p-5 font-semibold text-green-400">
-                    ${item.price}
-                  </td>
+                      {/* Price */}
+                      <td className="p-2 font-semibold text-green-400">
+                        ${item.price}
+                      </td>
 
-                  {/* Date */}
-                  <td className="p-5 text-zinc-400">
-                    {item.createdAt
-                      ? new Date(item.createdAt).toLocaleDateString()
-                      : "N/A"}
-                  </td>
-                </tr>
+                      {/* Date */}
+                      <td className="p-2 text-zinc-400">
+                        {item.createdAt
+                          ? new Date(item.createdAt).toLocaleDateString()
+                          : "N/A"}
+                      </td>
+                    </tr> 
               ))}
             </tbody>
           </table>
