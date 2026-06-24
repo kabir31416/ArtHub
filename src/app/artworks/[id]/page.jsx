@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -182,206 +182,204 @@ export default function ArtworkDetailsPage() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-zinc-900 to-slate-950 text-white relative overflow-hidden">
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-zinc-900 to-slate-950 text-white relative overflow-hidden">
 
-      {/* Background Glow */}
-      <div className="absolute top-20 left-20 w-96 h-96 bg-orange-500/10 blur-[150px] rounded-full" />
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 blur-[150px] rounded-full" />
+        {/* Background Glow */}
+        <div className="absolute top-20 left-20 w-96 h-96 bg-orange-500/10 blur-[150px] rounded-full" />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 blur-[150px] rounded-full" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-5 py-10">
+        <div className="relative z-10 max-w-7xl mx-auto px-5 py-10">
 
-        <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-12">
 
-          {/* IMAGE */}
-          <div className="group">
+            {/* IMAGE */}
+            <div className="group">
 
-            <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
-
-              <Image
-                src={artwork.image}
-                alt={artwork.title}
-                width={1200}
-                height={900}
-                priority
-                className="w-full h-[650px] object-cover transition duration-700 group-hover:scale-105"
-              />
-
-            </div>
-
-          </div>
-
-          {/* DETAILS */}
-          <div className="lg:sticky lg:top-24 h-fit">
-
-            {/* Category */}
-            <div className="flex flex-wrap gap-3 mb-4">
-
-              <span className="px-4 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm">
-                {artwork.category}
-              </span>
-
-              <span className="px-4 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
-                Available
-              </span>
-
-            </div>
-
-            <h1 className="text-4xl lg:text-5xl font-black leading-tight">
-              {artwork.title}
-            </h1>
-
-            {/* PRICE CARD */}
-            <div className="mt-8 p-6 rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
-
-              <p className="text-zinc-500 text-sm">
-                Artwork Price
-              </p>
-
-              <h2 className="text-5xl font-black mt-2 bg-gradient-to-r from-orange-400 to-purple-400 bg-clip-text text-transparent">
-                ৳ {artwork.price}
-              </h2>
-
-            </div>
-
-            {/* ACTIONS */}
-            <div className="mt-6 flex gap-3">
-
-              <button
-                onClick={handlePurchase}
-                disabled={isOwner}
-                className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-purple-600 font-semibold flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300 disabled:opacity-40"
-              >
-                <FaShoppingCart />
-                Buy Now
-              </button>
-
-              <button className="w-14 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-orange-500/30 transition">
-                <FaHeart />
-              </button>
-
-            </div>
-
-            <button
-              onClick={handleShare}
-              className="mt-3 w-full py-3 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-purple-500/30 transition flex items-center justify-center gap-2"
-            >
-              <FaShareAlt />
-              Share Artwork
-            </button>
-
-            {/* ARTIST */}
-            <div className="mt-8 p-5 rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
-
-              <p className="text-xs uppercase tracking-wider text-zinc-500 mb-4">
-                Artist
-              </p>
-
-              <div className="flex items-center gap-4">
+              <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
 
                 <Image
-                  src={artwork.artistImage || "https://i.pravatar.cc/150"}
-                  width={60}
-                  height={60}
-                  alt={artwork.artistName}
-                  className="w-15 h-15 rounded-2xl object-cover ring-2 ring-orange-500/20"
+                  src={artwork.image}
+                  alt={artwork.title}
+                  width={1200}
+                  height={900}
+                  priority
+                  className="w-full h-[650px] object-cover transition duration-700 group-hover:scale-105"
                 />
 
-                <div>
+              </div>
 
-                  <Link
-                    href={`/artist/${artwork.artistEmail}`}
-                    className="font-semibold hover:text-orange-400 transition"
-                  >
-                    {artwork.artistName}
-                  </Link>
+            </div>
 
-                  <p className="text-sm text-zinc-500">
-                    Digital Artist
-                  </p>
+            {/* DETAILS */}
+            <div className="lg:sticky lg:top-24 h-fit">
+
+              {/* Category */}
+              <div className="flex flex-wrap gap-3 mb-4">
+
+                <span className="px-4 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm">
+                  {artwork.category}
+                </span>
+
+                <span className="px-4 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm">
+                  Available
+                </span>
+
+              </div>
+
+              <h1 className="text-4xl lg:text-5xl font-black leading-tight">
+                {artwork.title}
+              </h1>
+
+              {/* PRICE CARD */}
+              <div className="mt-8 p-3 rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
+
+                <p className="text-zinc-500 text-sm">
+                  Artwork Price
+                </p>
+
+                <h2 className="text-4xl font-black mt-2 bg-gradient-to-r from-orange-400 to-purple-400 bg-clip-text text-transparent">
+                  ৳ {artwork.price}
+                </h2>
+
+              </div>
+
+              {/* ACTIONS */}
+              <div className="mt-6 flex gap-3">
+
+                <button
+                  onClick={handlePurchase}
+                  disabled={isOwner}
+                  className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-purple-600 font-semibold flex items-center justify-center gap-2 hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300 disabled:opacity-40"
+                >
+                  <FaShoppingCart />
+                  Buy Now
+                </button>
+
+              </div>
+
+              <button
+                onClick={handleShare}
+                className="mt-3 w-full py-3 rounded-2xl border border-white/10 bg-white/[0.03] hover:border-purple-500/30 transition flex items-center justify-center gap-2"
+              >
+                <FaShareAlt />
+                Share Artwork
+              </button>
+
+              {/* ARTIST */}
+              <div className="mt-8 p-5 rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl">
+
+                <p className="text-xs uppercase tracking-wider text-zinc-500 mb-4">
+                  Artist
+                </p>
+
+                <div className="flex items-center gap-4">
+
+                  <Image
+                    src={artwork.artistImage || "https://i.pravatar.cc/150"}
+                    width={60}
+                    height={60}
+                    alt={artwork.artistName}
+                    className="w-15 h-15 rounded-2xl object-cover ring-2 ring-orange-500/20"
+                  />
+
+                  <div>
+
+                    <Link
+                      href={`/artist/${artwork.artistEmail}`}
+                      className="font-semibold hover:text-orange-400 transition"
+                    >
+                      {artwork.artistName}
+                    </Link>
+
+                    <p className="text-sm text-zinc-500">
+                      Digital Artist
+                    </p>
+
+                  </div>
 
                 </div>
 
               </div>
 
-            </div>
-
-            {/* DATE */}
-            <div className="mt-5 flex items-center gap-3 text-sm text-zinc-500">
-              <FaCalendarAlt />
-              {new Date(artwork.createdAt).toLocaleDateString()}
-            </div>
-
-            {/* OWNER ACTIONS */}
-            {isOwner && (
-              <div className="flex gap-3 mt-8">
-
-                <button
-                  onClick={() => handleEdit(artwork)}
-                  className="px-5 py-3 rounded-xl bg-yellow-500 text-black font-medium flex items-center gap-2"
-                >
-                  <FaEdit />
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => handleDeleteArtwork(artwork._id)}
-                  className="px-5 py-3 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 flex items-center gap-2"
-                >
-                  <FaTrash />
-                  Delete
-                </button>
-
+              {/* DATE */}
+              <div className="mt-5 flex items-center gap-3 text-sm text-zinc-500">
+                <FaCalendarAlt />
+                {new Date(artwork.createdAt).toLocaleDateString()}
               </div>
-            )}
+
+              {/* OWNER ACTIONS */}
+              {isOwner && (
+                <div className="flex gap-3 mt-8">
+
+                  <button
+                    onClick={() => handleEdit(artwork)}
+                    className="px-5 py-3 rounded-xl bg-yellow-500 text-black font-medium flex items-center gap-2"
+                  >
+                    <FaEdit />
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => handleDeleteArtwork(artwork._id)}
+                    className="px-5 py-3 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 flex items-center gap-2"
+                  >
+                    <FaTrash />
+                    Delete
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+
+          </div>
+
+          {/* DESCRIPTION */}
+          <div className="mt-16">
+
+            <div className="inline-flex items-center gap-2 mb-5">
+
+              <div className="w-2 h-8 rounded-full bg-gradient-to-b from-orange-500 to-purple-600" />
+
+              <h2 className="text-2xl font-bold">
+                About this Artwork
+              </h2>
+
+            </div>
+
+            <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8">
+
+              <p className="text-zinc-300 leading-8">
+                {artwork.description}
+              </p>
+
+            </div>
+
+            <div className="mt-12">
+              <CommentsSection artId={id} />
+            </div>
 
           </div>
 
         </div>
 
-        {/* DESCRIPTION */}
-        <div className="mt-16">
-
-          <div className="inline-flex items-center gap-2 mb-5">
-
-            <div className="w-2 h-8 rounded-full bg-gradient-to-b from-orange-500 to-purple-600" />
-
-            <h2 className="text-2xl font-bold">
-              About this Artwork
-            </h2>
-
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-8">
-
-            <p className="text-zinc-300 leading-8">
-              {artwork.description}
-            </p>
-
-          </div>
-
-          <div className="mt-12">
-            <CommentsSection artId={id} />
-          </div>
-
-        </div>
-
+        <ArtworkModal
+          open={open}
+          onClose={() => setOpen(false)}
+          onSubmit={handleUpdate}
+          initialData={selected}
+          categories={[
+            "Digital Art",
+            "Illustration",
+            "Photography",
+            "Painting",
+            "NFT Art",
+            "3D Art",
+            "Abstract",
+          ]}
+        />
       </div>
-
-      <ArtworkModal
-        open={open}
-        onClose={() => setOpen(false)}
-        onSubmit={handleUpdate}
-        initialData={selected}
-        categories={[
-          "Digital Art",
-          "Illustration",
-          "Photography",
-          "Painting",
-          "NFT Art",
-          "3D Art",
-          "Abstract",
-        ]}
-      />
-    </div>
+    </Suspense>
   );
 }

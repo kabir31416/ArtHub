@@ -49,54 +49,54 @@ export default function CommentsSection({ artId }) {
 
 
     const handleSubmit = async () => {
-  if (!text.trim()) return;
+        if (!text.trim()) return;
 
-  try {
-    const url = editingId
-      ? `${process.env.NEXT_PUBLIC_SERVER_URL}/comments/${editingId}`
-      : `${process.env.NEXT_PUBLIC_SERVER_URL}/comments`;
+        try {
+            const url = editingId
+                ? `${process.env.NEXT_PUBLIC_SERVER_URL}/comments/${editingId}`
+                : `${process.env.NEXT_PUBLIC_SERVER_URL}/comments`;
 
-    const method = editingId ? "PUT" : "POST";
+            const method = editingId ? "PUT" : "POST";
 
-    const body = editingId
-      ? { text }
-      : {
-          artId,
-          userName: user?.name,
-          userEmail: user?.email,
-          userImage: user?.image,
-          text,
-        };
+            const body = editingId
+                ? { text }
+                : {
+                    artId,
+                    userName: user?.name,
+                    userEmail: user?.email,
+                    userImage: user?.image,
+                    text,
+                };
 
-    const res = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
+            const res = await fetch(url, {
+                method,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(body),
+            });
 
-    const data = await res.json();
+            const data = await res.json();
 
-    if (!res.ok) {
-      throw new Error(data.message || "Something went wrong");
-    }
+            if (!res.ok) {
+                throw new Error(data.message || "Something went wrong");
+            }
 
-    toast.success(
-      editingId
-        ? "Comment updated successfully!"
-        : "Comment added successfully!"
-    );
+            toast.success(
+                editingId
+                    ? "Comment updated successfully!"
+                    : "Comment added successfully!"
+            );
 
-    setText("");
-    setEditingId(null);
-    loadComments();
-  } catch (error) {
-    toast.error(
-      error.message || "Failed to submit comment"
-    );
-  }
-};
+            setText("");
+            setEditingId(null);
+            loadComments();
+        } catch (error) {
+            toast.error(
+                error.message || "Failed to submit comment"
+            );
+        }
+    };
 
 
     const handleDelete = async (id) => {
