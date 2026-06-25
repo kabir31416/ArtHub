@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🎨 ArtHub
 
-## Getting Started
+ArtHub is a modern digital artwork marketplace where artists can upload and sell their artwork, and users can discover and purchase digital art through a clean and responsive interface.
 
-First, run the development server:
+---
+
+## 🌐 Live Website
+
+https://art-hub-369.vercel.app/
+
+---
+
+## 🎯 Project Purpose
+
+ArtHub provides a secure marketplace for digital artists to showcase and monetize their work while allowing buyers to browse, purchase, and manage their digital artwork collection.
+
+---
+
+## ✨ Key Features
+
+- 🔐 Authentication with Email/Password & Google Login
+- 👤 Role-based Dashboard (User, Artist, Admin)
+- 🎨 Artists can upload, edit and delete artworks
+- 🖼️ Artwork details page with modern product layout
+- 📷 Image upload using ImgBB
+- ❤️ Purchase system with subscription limits
+- 💳 Subscription plans (Free, Pro, Premium)
+- 📊 Dashboard for managing artworks and purchases
+- 📱 Fully responsive design
+- ⚡ Protected routes based on user role
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- Next.js 16
+- React
+- Tailwind CSS
+- React Icons
+- Lucide React
+
+### Backend
+
+- Node.js
+- Express.js
+- MongoDB
+- Better Auth
+
+---
+
+## 📦 NPM Packages Used
+
+### Frontend
+
+```bash
+next
+react
+react-dom
+tailwindcss
+react-icons
+lucide-react
+better-auth
+```
+
+### Backend
+
+```bash
+express
+mongodb
+better-auth
+cors
+dotenv
+```
+
+---
+
+## 🚀 Installation
+
+Clone the repository
+
+```bash
+git clone  https://github.com/kabir31416/ArtHub
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🔑 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Frontend
 
-## Learn More
+```env
+NEXT_PUBLIC_SERVER_URL=
+NEXT_PUBLIC_IMGBB_API=
+NEXT_PUBLIC_APP_URL=
+```
 
-To learn more about Next.js, take a look at the following resources:
+Backend
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```env
+MONGODB_URI=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 👥 User Roles
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### User
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Browse artworks
+- Purchase artworks
+- Manage subscription
+- View purchase history
+
+### Artist
+
+- Upload artworks
+- Edit artworks
+- Delete artworks
+- View sales
+
+### Admin
+
+- Manage users
+- Manage artworks
+- View transactions
+- View analytics
+
+---
+
+## 📄 License
+
+This project is developed for educational purposes.
