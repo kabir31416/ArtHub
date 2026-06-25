@@ -39,13 +39,14 @@ export default function ArtworkCard({ art }) {
           {/* PRICE + DATE */}
           <div className="flex items-center justify-between mb-5">
             <span className="bg-gradient-to-r from-orange-400 to-purple-400 bg-clip-text text-transparent font-extrabold text-xl">
-              ৳ {art.price}
+              $ {art.price}
             </span>
             <span className="text-xs text-zinc-500 flex items-center gap-2">
               <FaCalendarAlt />
               {new Date(art.createdAt).toLocaleDateString()}
             </span>
           </div>
+
           {/* ARTIST */}
           <div className="flex items-center justify-between border-t border-white/10 pt-4">
             <div className="flex items-center gap-3 min-w-0">
@@ -54,7 +55,7 @@ export default function ArtworkCard({ art }) {
                 alt={art.artistName}
                 width={100}
                 height={100}
-                className="w-11 h-11 rounded-2xl object-cover border border-white/10"
+                className="w-11 h-11 rounded-full object-cover border border-white/10"
               />
               <div className="min-w-0">
                 <p className="text-sm font-semibold text-white truncate">

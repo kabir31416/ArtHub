@@ -40,18 +40,12 @@ export default function AllArtworks() {
       url.searchParams.append("page", page);
       url.searchParams.append("limit", "8");
 
-      console.log("========== API REQUEST ==========");
-      console.log("URL:", url.toString());
-
       const res = await fetch(url.toString());
 
       console.log("Status:", res.status);
       console.log("OK:", res.ok);
 
       const data = await res.json();
-
-      console.log("========== API RESPONSE ==========");
-      console.log(data);
 
       if (!res.ok) {
         throw new Error(
@@ -62,9 +56,6 @@ export default function AllArtworks() {
       setArtworks(data.artworks || []);
       setTotalPages(data.totalPages || 1);
     } catch (error) {
-      console.error("========== FETCH ERROR ==========");
-      console.error(error);
-
       setArtworks([]);
       setTotalPages(1);
     } finally {

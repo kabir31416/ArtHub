@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSession } from "@/app/lib/auth-client";
 import {
   FaCrown,
@@ -15,37 +15,65 @@ export default function UserDashboard() {
   const [loading, setLoading] = useState(false);
   const [upgradingPlan, setUpgradingPlan] = useState(null);
 
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    if (!session?.user?.email) return;
+
+    fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/user/${session.user.email}`
+    )
+      .then(res => res.json())
+      .then(data => setUserData(data));
+  }, [session]);
+
+
+  if (!userData) {
+    return (
+      <div className="text-white p-10">
+        Loading...
+      </div>
+    );
+  }
+
+
+
   const currentPlan =
-    session?.user?.subscriptionTier || "free";
+    userData?.subscriptionTier || "free";
+
 
   const handleUpgrade = async (tier) => {
+    console.log("tier =", tier);
+    console.log("email =", session?.user?.email);
+
     try {
       setUpgradingPlan(tier);
 
+      const payload = {
+        email: session?.user?.email,
+        tier,
+      };
+
+      console.log("payload =", payload);
+
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/subscription`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-subscription-session`,
         {
-          method: "PATCH",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            email: session?.user?.email,
-            tier,
-          }),
+          body: JSON.stringify(payload),
         }
       );
-
 
       const data = await res.json();
 
       if (data.success) {
-        alert(`Successfully upgraded to ${tier}`);
-        window.location.reload();
+        window.location.href = data.url;
       }
     } catch (err) {
       console.log(err);
-      alert("Upgrade failed");
     } finally {
       setUpgradingPlan(null);
     }
@@ -83,6 +111,10 @@ export default function UserDashboard() {
     },
   ];
 
+
+
+
+
   return (
     <div className="space-y-10">
 
@@ -109,13 +141,13 @@ export default function UserDashboard() {
               <p className="text-zinc-400 mt-1">
                 Purchases:{" "}
                 <span className="text-white font-medium">
-                  {session?.user?.purchasedCount || 0}
+                  {userData?.purchasedCount || 0}
                 </span>
                 {" / "}
                 <span className="text-orange-400">
                   {currentPlan === "premium"
                     ? "Unlimited"
-                    : session?.user?.maxPurchases}
+                    : userData?.maxPurchases}
                 </span>
               </p>
             </div>
@@ -205,20 +237,17 @@ export default function UserDashboard() {
                   </div>
 
                   {!active && (
-                    <form
-                      action="/api/checkout_sessions"
-                      method="POST"
+
+                    <button
+                      onClick={() => handleUpgrade(plan.tier)}
+                      disabled={upgradingPlan === plan.tier || plan.tier === "free"}
+                      className={`w-full ${plan.tier === "free" ? "hidden" : " "}   mt-8  py-3.5 rounded-2xl  font-semibold text-white bg-gradient-to-r from-orange-500 to-purple-600 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300  disabled:opacity-60`}
                     >
-                      <button
-                        type="submit"
-                        role="link"  disabled={upgradingPlan === plan.tier} 
-                        className="  w-full   mt-8  py-3.5 rounded-2xl  font-semibold text-white bg-gradient-to-r from-orange-500 to-purple-600 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300  disabled:opacity-60"
-                      >
-                        {upgradingPlan === plan.tier
-                          ? "Processing..."
-                          : `Upgrade to ${plan.title}`}
-                      </button>
-                    </form>
+                      {upgradingPlan === plan.tier
+                        ? "Processing..."
+                        : `Upgrade to ${plan.title}`}
+                    </button>
+
                   )}
 
                 </div>

@@ -8,6 +8,7 @@ import { FaGoogle } from "react-icons/fa6";
 import { authClient } from "@/app/lib/auth-client";
 import Image from "next/image";
 import { FaPalette } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function SignUpPage() {
     const router = useRouter();
@@ -20,6 +21,7 @@ export default function SignUpPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [image, setImage] = useState("");
+    const [uploading, setUploading] = useState(false);
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -55,6 +57,43 @@ export default function SignUpPage() {
             setError("Something went wrong");
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files?.[0];
+
+        if (!file) return;
+
+        try {
+            setUploading(true);
+
+            const formData = new FormData();
+            formData.append("image", file);
+
+            const res = await fetch(
+                `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`,
+                {
+                    method: "POST",
+                    body: formData,
+                }
+            );
+
+            const data = await res.json();
+
+            if (!res.ok || !data.success) {
+                throw new Error(
+                    data?.error?.message || "Image upload failed"
+                );
+            }
+
+            setImage(data.data.url);
+
+        } catch (error) {
+            console.error(error);
+            toast.error(error.message || "Image upload failed");
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -198,27 +237,41 @@ export default function SignUpPage() {
 
                     </div>
 
-                    {/* IMAGE */}
+                    {/* PROFILE IMAGE */}
                     <div>
 
                         <label className="text-sm font-medium text-zinc-300">
-                            Profile Image URL
+                            Profile Image
                         </label>
 
-                        <div className="relative mt-2">
+                        <div className="mt-2">
 
-                            <User
-                                size={18}
-                                className="absolute left-4 top-1/2 -translate-y-1/2 text-orange-400"
-                            />
+                            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-white/10 rounded-2xl cursor-pointer bg-white/[0.03] hover:border-orange-500/30 transition">
 
-                            <input
-                                value={image}
-                                onChange={(e) => setImage(e.target.value)}
-                                type="url"
-                                placeholder="https://example.com/profile.jpg"
-                                className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 pl-11 pr-4 text-white text-sm backdrop-blur-xl outline-none transition-all duration-300 placeholder:text-zinc-500 hover:border-orange-500/30 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20"
-                            />
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleImageUpload}
+                                    className="hidden"
+                                />
+
+                                {uploading ? (
+                                    <div className="text-center">
+                                        <div className="w-6 h-6 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto" />
+                                        <p className="text-sm text-zinc-400 mt-2">
+                                            Uploading...
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <User className="text-orange-400 text-2xl" />
+                                        <p className="text-sm text-zinc-400 mt-2">
+                                            Click to upload image
+                                        </p>
+                                    </>
+                                )}
+
+                            </label>
 
                         </div>
 
@@ -231,9 +284,6 @@ export default function SignUpPage() {
                                     width={100}
                                     height={100}
                                     className="h-24 w-24 rounded-full object-cover border-2 border-orange-500/30 ring-4 ring-purple-500/10"
-                                    onError={(e) => {
-                                        e.currentTarget.style.display = "none";
-                                    }}
                                 />
 
                             </div>

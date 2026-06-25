@@ -10,6 +10,7 @@ import {
   FaAlignLeft,
   FaImage,
 } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 
 
@@ -66,7 +67,7 @@ export default function AddArtwork() {
 
     const error = validate();
     if (error) {
-      alert(error);
+      toast(error);
       return;
     }
 

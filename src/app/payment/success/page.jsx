@@ -1,11 +1,10 @@
 import { stripe } from "@/app/lib/stripe";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import {
   FaCheckCircle,
-  FaPalette,
   FaArrowRight,
-  FaShoppingBag,
 } from "react-icons/fa";
 
 
@@ -25,6 +24,49 @@ export default async function Success({ searchParams }) {
       expand: ["line_items", "payment_intent"],
     }
   );
+
+
+  if (session.mode === "payment") {
+    try {
+      await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/purchase`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            sessionId: session_id,
+          }),
+          cache: "no-store",
+        }
+      );
+    } catch (error) {
+      console.error(
+        "Purchase Save Error:",
+        error
+      );
+    }
+  }
+
+  if (session.mode === "subscription") {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/subscription-success`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sessionId: session_id,
+        }),
+        cache: "no-store",
+      }
+    );
+
+    const data = await response.json();
+    console.log("subscription-success =", data);
+  }
 
   const status = session.status;
   const customerEmail =

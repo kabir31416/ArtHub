@@ -7,6 +7,7 @@ import { Mail, Lock } from "lucide-react";
 import { FaGoogle } from "react-icons/fa6";
 import { authClient } from "@/app/lib/auth-client";
 import { FaPalette } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function SignInPage() {
     const router = useRouter();
@@ -36,7 +37,11 @@ export default function SignInPage() {
 
             if (data) {
                 router.push("/");
+                
             }
+
+            toast.success("Login Successfull !!")
+
         } catch (err) {
             setErrorMsg("Login failed");
         } finally {

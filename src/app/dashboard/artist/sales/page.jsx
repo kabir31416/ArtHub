@@ -89,8 +89,8 @@ export default function Sales() {
                           <Image
                             src={item.image}
                             alt={item.title}
-                            width={14}
-                            height={14}
+                            width={100}
+                            height={100}
                             className="w-14 h-14 rounded-xl object-cover"
                           />
 

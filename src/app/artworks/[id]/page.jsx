@@ -18,6 +18,7 @@ import {
 
 import ArtworkModal from "@/components/ArtworkModal";
 import CommentsSection from "./CommentSection";
+import { toast } from "react-toastify";
 
 export default function ArtworkDetailsPage() {
   const { id } = useParams();
@@ -52,6 +53,9 @@ export default function ArtworkDetailsPage() {
       loadArtwork();
     }
   }, [id]);
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [selectedArtwork, setSelectedArtwork] = useState(null);
 
   if (loading) {
     return (
@@ -121,62 +125,74 @@ export default function ArtworkDetailsPage() {
     }
   };
 
-  const handleDeleteArtwork = async (id) => {
-    const confirmDelete = window.confirm("Are you sure?");
-    if (!confirmDelete) return;
+  const handleDeleteArtwork = async () => {
+    if (!selectedArtwork) return;
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/artworks/${id}`,
-        { method: "DELETE" }
-      );
-
-      const data = await res.json();
-
-      if (data.success) {
-        router.push("/");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handlePurchase = async () => {
-    try {
-
-      const purchaseData = {
-        artworkId: artwork._id,
-        title: artwork.title,
-        image: artwork.image,
-        price: artwork.price,
-        type: "purchase",
-        artistName: artwork.artistName,
-        artistEmail: artwork.artistEmail,
-        buyerName: session?.user?.name,
-        buyerEmail: session?.user?.email,
-        buyerImage: session?.user?.image,
-      };
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/purchase`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/artworks/${selectedArtwork._id}`,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(purchaseData),
+          method: "DELETE",
         }
       );
 
       const data = await res.json();
 
       if (data.success) {
-        alert("Purchase Successful");
+        setArtworks((prev) =>
+          prev.filter(
+            (item) => item._id !== selectedArtwork._id
+          )
+        );
+
+        toast.success("Artwork deleted successfully");
+      } else {
+        toast.error("Failed to delete artwork");
+      }
+
+      setDeleteModal(false);
+      setSelectedArtwork(null);
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    }
+  };
+
+  const handlePurchase = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            artworkId: artwork._id,
+            title: artwork.title,
+            image: artwork.image,
+            price: artwork.price,
+            artistName: artwork.artistName,
+            artistEmail: artwork.artistEmail,
+            buyerName: session?.user?.name,
+            buyerEmail: session?.user?.email,
+            buyerImage: session?.user?.image,
+          }),
+        }
+      );
+
+      const data = await res.json();
+
+      console.log("Response:", data);
+
+      if (data.success) {
+        window.location.href = data.url;
+      } else {
+        alert(data.message);
       }
 
     } catch (error) {
       console.log(error);
-      alert("Purchase Failed");
     }
   };
 
@@ -239,7 +255,7 @@ export default function ArtworkDetailsPage() {
                 </p>
 
                 <h2 className="text-4xl font-black mt-2 bg-gradient-to-r from-orange-400 to-purple-400 bg-clip-text text-transparent">
-                  ৳ {artwork.price}
+                  $ {artwork.price}
                 </h2>
 
               </div>
@@ -321,7 +337,10 @@ export default function ArtworkDetailsPage() {
                   </button>
 
                   <button
-                    onClick={() => handleDeleteArtwork(artwork._id)}
+                    onClick={() => {
+                      setSelectedArtwork(artwork);
+                      setDeleteModal(true);
+                    }}
                     className="px-5 py-3 rounded-xl bg-red-500/10 text-red-400 border border-red-500/20 flex items-center gap-2"
                   >
                     <FaTrash />
@@ -379,7 +398,58 @@ export default function ArtworkDetailsPage() {
             "Abstract",
           ]}
         />
+
+        {deleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+
+            <div className="w-full max-w-md rounded-3xl border border-white/10 bg-[#111114] p-6">
+
+              <h2 className="text-2xl font-bold text-white">
+                Delete Artwork
+              </h2>
+
+              <p className="mt-3 text-zinc-400">
+                Are you sure you want to delete
+                <span className="text-white font-semibold">
+                  {" "}
+                  {selectedArtwork?.title}
+                </span>
+                ?
+              </p>
+
+              <p className="mt-2 text-sm text-red-400">
+                This action cannot be undone.
+              </p>
+
+              <div className="mt-6 flex justify-end gap-3">
+
+                <button
+                  onClick={() => {
+                    setDeleteModal(false);
+                    setSelectedArtwork(null);
+                  }}
+                  className="px-5 py-2 rounded-xl border border-white/10 text-white hover:bg-white/5 transition"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleDeleteArtwork}
+                  className="px-5 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition"
+                >
+                  Delete
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+        )}
+
       </div>
+
+
     </Suspense>
   );
 }
